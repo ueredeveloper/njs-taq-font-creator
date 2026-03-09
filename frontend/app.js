@@ -3,7 +3,7 @@
 const e = React.createElement;
 
 function App() {
-  const [text, setText] = React.useState('d da g ga p pa b ba');
+  const [text, setText] = React.useState('dada gege baba papa');
 
   return e(
     'div',

@@ -7,6 +7,8 @@ const { createGlyphD } = require('./glyph-components/d.js');
 const { createGlyphE } = require('./glyph-components/e.js');
 const { createGlyphG } = require('./glyph-components/g.js');
 const { createGlyphI } = require('./glyph-components/i.js');
+const { createGlyphDD } = require('./glyph-components/dd.js');
+const { createGlyphGG } = require('./glyph-components/gg.js');
 const { createGlyphO } = require('./glyph-components/o.js');
 const { createGlyphP } = require('./glyph-components/p.js');
 const { createGlyphU } = require('./glyph-components/u.js');
@@ -36,6 +38,8 @@ function generateFont() {
     const glyphU = createGlyphU(options);
     const glyphG = createGlyphG(options);
     const glyphP = createGlyphP(options);
+    const glyphDD = createGlyphDD(options);
+    const glyphGG = createGlyphGG(options);
  
     // Criar glifos para ligaduras (usando a mesma forma do 'd')
     const pathD = glyphD.path;
@@ -78,7 +82,7 @@ function generateFont() {
         });
     });
 
-    const ligatures = [...ligaturesD, ...ligaturesB, ...ligaturesG, ...ligaturesP];
+    const ligatures = [...ligaturesD, ...ligaturesB, ...ligaturesG, ...ligaturesP, glyphDD, glyphGG];
  
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
     // O glifo .notdef deve ser o primeiro. As ligaduras não têm unicode e vêm depois.
@@ -95,8 +99,8 @@ function generateFont() {
         familyName: FONT_FAMILY_NAME,
         styleName: 'Regular',
         unitsPerEm: 1000,
-        ascender: 1500, // Aumentado para acomodar os glifos maiores
-        descender: -700,
+        ascender: 1300, // Ajustado para o glifo mais alto (d, p)
+        descender: -1300, // Mantido para acomodar os glifos empilhados (gg)
         glyphs: glyphs
     });
 
@@ -123,6 +127,15 @@ function generateFont() {
         { sub: ['p', 'o'], by: 'p_o' },
         { sub: ['p', 'u'], by: 'p_u' },
     ];
+
+    // Adicionar ligaduras complexas (ex: DADE, GAGE)
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    vowels.forEach(v1 => {
+        vowels.forEach(v2 => {
+            ligatureSubs.push({ sub: ['d', v1, 'd', v2], by: 'd_d' });
+            ligatureSubs.push({ sub: ['g', v1, 'g', v2], by: 'g_g' });
+        });
+    });
 
     ligatureSubs.forEach(lig => {
         try {

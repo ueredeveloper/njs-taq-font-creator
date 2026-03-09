@@ -5,9 +5,9 @@ function createGlyphB(options) {
     const path = new opentype.Path();
     // Linha curvada para baixo, 2x o tamanho da letra 'u'.
     path.moveTo(100, 400);
-    path.quadraticCurveTo(500, -600, 900, 400);
+    path.quadraticCurveTo(500, -400, 900, 400);
     path.lineTo(900, 400 + thickness);
-    path.quadraticCurveTo(500, -600 + thickness, 100, 400 + thickness);
+    path.quadraticCurveTo(500, -400 + thickness, 100, 400 + thickness);
     path.closePath();
     return new opentype.Glyph({
         name: 'b',
