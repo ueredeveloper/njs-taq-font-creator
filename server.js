@@ -1,11 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const generateFont = require('./example.js');
+const { generateFont } = require('./font-generator.js');
+
 
 const PORT = 3000;
-const FONT_FILENAME = 'fonte_aeou.otf';
-const FONT_ENDPOINT = '/api/font';
+const FONT_FILENAME = 'fonte_abeu.otf';
+const FONT_ENDPOINT = `/api/fonts/${FONT_FILENAME}`;
 
 // Generate the font file before starting the server.
 generateFont();
@@ -20,11 +21,11 @@ const server = http.createServer((req, res) => {
         <title>Font Reader</title>
         <style>
           @font-face {
-            font-family: 'FonteAEOU';
-            src: url('${FONT_ENDPOINT}');
+            font-family: 'FonteABEU';
+            src: url('${FONT_ENDPOINT}') format('opentype');
           }
           body {
-            font-family: 'FonteAEOU', sans-serif;
+            font-family: 'FonteABEU', sans-serif;
             font-size: 150px;
             display: flex;
             justify-content: center;
@@ -37,7 +38,7 @@ const server = http.createServer((req, res) => {
         </style>
       </head>
       <body>
-        aeou
+        abeu
       </body>
       </html>
     `);
