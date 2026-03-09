@@ -1,15 +1,15 @@
 {
   "name": "njs-taq-font-creator",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "Ferramenta para criar uma fonte de taquigrafia baseada no método Maron.",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "opentype.js": "^1.3.4"
   },

@@ -1,12 +1,10 @@
 # Dependencies
-/node_modules/
+/node_modules
 
-# Generated font files
-/fonts/
+# Generated files
+/fonts
 
 # Log files
 npm-debug.log*
-
-# OS generated files
-.DS_Store
-Thumbs.db
+yarn-debug.log*
+yarn-error.log*
