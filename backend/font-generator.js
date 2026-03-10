@@ -103,8 +103,8 @@ function generateFont() {
         familyName: FONT_FAMILY_NAME,
         styleName: 'Regular',
         unitsPerEm: 1000,
-        ascender: 800,
-        descender: -600,
+        ascender: 600,
+        descender: -150,
         glyphs: glyphs
     });
 

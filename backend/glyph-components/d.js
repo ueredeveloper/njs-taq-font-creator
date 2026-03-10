@@ -4,7 +4,7 @@ function createGlyphD({ thickness }) {
   const path = new opentype.Path();
 
   // Semicírculo vertical para a direita, 3x o tamanho da vogal 'o'
-  const radius = 300;
+  const radius = 150;
   const x1 = thickness; // Borda interna em x=20
   const midY = 400; // Centralizado na linha de base
   const y1 = midY + radius;
@@ -40,7 +40,7 @@ function createGlyphD({ thickness }) {
   return new opentype.Glyph({
     name: "d",
     unicode: "d".charCodeAt(0),
-    advanceWidth: radius + thickness, // 320
+    advanceWidth: radius + thickness, // 170
     path,
   });
 }

@@ -2,7 +2,7 @@ const opentype = require('opentype.js');
 
 function createGlyphSpace(options) {
     // A largura do espaço é crucial para a legibilidade.
-    const advanceWidth = 250;
+    const advanceWidth = 125;
     return new opentype.Glyph({
         name: 'space',
         unicode: ' '.charCodeAt(0),

@@ -2,7 +2,7 @@ const opentype = require('opentype.js');
 
 function drawDShape(path, thickness, yOffset) {
     // Coordenadas para uma "meia-lua" perfeita (semicírculo) para a direita
-    const radius = 300;
+    const radius = 150;
     const x1 = thickness;
     const midYBase = 400;
     const y1 = midYBase + radius + yOffset;
@@ -32,14 +32,14 @@ function drawDShape(path, thickness, yOffset) {
 function createGlyphDD(options) {
     const { thickness } = options;
     const path = new opentype.Path();
-    const verticalShift = 600; // 2 * radius
+    const verticalShift = 300; // 2 * radius
 
     drawDShape(path, thickness, 0);
     drawDShape(path, thickness, -verticalShift);
 
     return new opentype.Glyph({
         name: 'd_d',
-        advanceWidth: 300 + thickness, // Mesma largura do 'd' simples
+        advanceWidth: 150 + thickness, // Mesma largura do 'd' simples
         path: path
     });
 }
