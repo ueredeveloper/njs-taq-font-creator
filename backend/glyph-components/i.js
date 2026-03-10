@@ -5,10 +5,10 @@ function createGlyphI(options) {
     const path = new opentype.Path();
     const x = thickness / 2; // Centralizado na própria espessura
     // Uma linha vertical simples, transformada em um retângulo fino.
-    path.moveTo(x - thickness / 2, 700);
-    path.lineTo(x + thickness / 2, 700);
-    path.lineTo(x + thickness / 2, 100);
-    path.lineTo(x - thickness / 2, 100);
+    path.moveTo(x - thickness / 2, 500);
+    path.lineTo(x + thickness / 2, 500);
+    path.lineTo(x + thickness / 2, 300);
+    path.lineTo(x - thickness / 2, 300);
     path.closePath();
     return new opentype.Glyph({
         name: 'i',

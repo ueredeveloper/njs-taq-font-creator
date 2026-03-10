@@ -1,12 +1,12 @@
 const opentype = require('opentype.js');
 
 function createGlyphSpace(options) {
-    // A largura do espaço é crucial para a legibilidade. 600 é um bom ponto de partida
-    // em um sistema de 1000 unidades por Em.
+    // A largura do espaço é crucial para a legibilidade.
+    const advanceWidth = 250;
     return new opentype.Glyph({
         name: 'space',
         unicode: ' '.charCodeAt(0),
-        advanceWidth: 600,
+        advanceWidth: advanceWidth,
         path: new opentype.Path() // O espaço não tem contorno visível
     });
 }

@@ -5,9 +5,9 @@ function createGlyphO(options) {
     const path = new opentype.Path();
 
     // Coordenadas para uma "meia-lua" perfeita (semicírculo) para a direita
-    const x1 = 20, y1 = 700; // Deslocado para a esquerda
-    const y2 = 100;
-    const radius = (y1 - y2) / 2; // 300
+    const radius = 100;
+    const x1 = thickness; // Para que a borda interna esquerda fique em x=0
+    const y1 = 500, y2 = 300; // Centralizado em y=400
 
     const kappa = 0.5522847498;
     const control = radius * kappa;
@@ -32,7 +32,7 @@ function createGlyphO(options) {
     return new opentype.Glyph({
         name: 'o',
         unicode: 'o'.charCodeAt(0),
-        advanceWidth: 320, // Largura ajustada
+        advanceWidth: radius + thickness, // 120
         path: path
     });
 }

@@ -6,15 +6,15 @@ function createGlyphU(options) {
 
     // Coordenadas para uma "meia-lua" perfeita (semicírculo) para baixo
     const x1 = 0, y1 = 400;
-    const x2 = 600, y2 = 400;
-    const radius = (x2 - x1) / 2; // 300
+    const x2 = 200, y2 = 400;
+    const radius = (x2 - x1) / 2; // 100
 
     const kappa = 0.5522847498;
     const control = radius * kappa;
 
     const midX = (x1 + x2) / 2;
     const outerBottomY = y1 - radius;
-    const innerY = y1 + thickness;
+    const innerY = y1 + thickness; // Linha interna é deslocada para cima
     const innerBottomY = innerY - radius;
 
     // Arco externo (para baixo)
@@ -31,7 +31,7 @@ function createGlyphU(options) {
     return new opentype.Glyph({
         name: 'u',
         unicode: 'u'.charCodeAt(0),
-        advanceWidth: 600,
+        advanceWidth: 200,
         path: path
     });
 }

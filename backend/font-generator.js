@@ -103,8 +103,8 @@ function generateFont() {
         familyName: FONT_FAMILY_NAME,
         styleName: 'Regular',
         unitsPerEm: 1000,
-        ascender: 1300, // Ajustado para o glifo mais alto (d, p)
-        descender: -1300, // Mantido para acomodar os glifos empilhados (gg)
+        ascender: 800,
+        descender: -600,
         glyphs: glyphs
     });
 
