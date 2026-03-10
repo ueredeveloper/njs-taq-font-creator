@@ -32,7 +32,7 @@ function drawGShape(path, thickness, yOffset) {
 function createGlyphGG(options) {
     const { thickness } = options;
     const path = new opentype.Path();
-    const verticalShift = 300; // 2 * radius
+    const verticalShift = 300; // 2 * radius, para que um G comece onde o outro termina
 
     drawGShape(path, thickness, 0);
     drawGShape(path, thickness, -verticalShift);

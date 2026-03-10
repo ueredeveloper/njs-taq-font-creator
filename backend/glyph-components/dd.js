@@ -32,7 +32,7 @@ function drawDShape(path, thickness, yOffset) {
 function createGlyphDD(options) {
     const { thickness } = options;
     const path = new opentype.Path();
-    const verticalShift = 300; // 2 * radius
+    const verticalShift = 300; // 2 * radius, para que um D comece onde o outro termina
 
     drawDShape(path, thickness, 0);
     drawDShape(path, thickness, -verticalShift);

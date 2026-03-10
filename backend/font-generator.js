@@ -109,7 +109,25 @@ function generateFont() {
     });
 
     // Adicionar substituições de ligaduras
-    const ligatureSubs = [
+    // As ligaduras devem ser definidas da mais longa para a mais curta para garantir a correspondência correta.
+
+    // 1. Ligaduras de 4 caracteres (ex: DADE)
+    const complexLigatures = [];
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    vowels.forEach(v1 => {
+        vowels.forEach(v2 => {
+            complexLigatures.push({ sub: ['d', v1, 'd', v2], by: 'd_d' });
+            complexLigatures.push({ sub: ['g', v1, 'g', v2], by: 'g_g' });
+        });
+    });
+
+    // 2. Ligaduras de 2 caracteres (ex: DA, DD)
+    const simpleLigatures = [
+        // Ligaduras de empilhamento
+        { sub: ['d', 'd'], by: 'd_d' },
+        { sub: ['g', 'g'], by: 'g_g' },
+
+        // Ligaduras de consoante + vogal (atualmente são placeholders)
         { sub: ['d', 'a'], by: 'd_a' },
         { sub: ['d', 'e'], by: 'd_e' },
         { sub: ['d', 'i'], by: 'd_i' },
@@ -132,14 +150,7 @@ function generateFont() {
         { sub: ['p', 'u'], by: 'p_u' },
     ];
 
-    // Adicionar ligaduras complexas (ex: DADE, GAGE)
-    const vowels = ['a', 'e', 'i', 'o', 'u'];
-    vowels.forEach(v1 => {
-        vowels.forEach(v2 => {
-            ligatureSubs.push({ sub: ['d', v1, 'd', v2], by: 'd_d' });
-            ligatureSubs.push({ sub: ['g', v1, 'g', v2], by: 'g_g' });
-        });
-    });
+    const ligatureSubs = [...complexLigatures, ...simpleLigatures];
 
     ligatureSubs.forEach(lig => {
         try {
