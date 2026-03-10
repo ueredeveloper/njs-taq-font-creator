@@ -19,6 +19,8 @@ const { createGlyphU } = require('./u.js');
 const { createGlyphT } = require('./t.js');
 const { createGlyphTT } = require('./tt.js');
 const { createGlyphTTT } = require('./ttt.js');
+const { createGlyphGT } = require('./gt.js');
+const { createGlyphDT } = require('./dt.js');
 const { createGlyphSpace } = require('./space.js');
 const { createGlyphLines } = require('./lines.js');
 
@@ -58,14 +60,9 @@ function generateFont() {
     const glyphT = createGlyphT(options);
     const glyphTT = createGlyphTT(options);
     const glyphTTT = createGlyphTTT(options);
+    const glyphGT = createGlyphGT(options);
+    const glyphDT = createGlyphDT(options);
 
-    // Criar glifos para ligaduras (usando a mesma forma da consoante base)
-    const ligaturesD = ['d_a', 'd_e', 'd_i', 'd_o', 'd_u'].map(name => new opentype.Glyph({
-        name, advanceWidth: glyphD.advanceWidth, path: glyphD.path
-    }));
-    const ligaturesG = ['g_a', 'g_e', 'g_i', 'g_o', 'g_u'].map(name => new opentype.Glyph({
-        name, advanceWidth: glyphG.advanceWidth, path: glyphG.path
-    }));
     const ligaturesB = ['b_a', 'b_e', 'b_i', 'b_o', 'b_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphB.advanceWidth, path: glyphB.path
     }));
@@ -77,8 +74,6 @@ function generateFont() {
     }));
 
     const ligatures = [
-        ...ligaturesD,
-        ...ligaturesG,
         ...ligaturesB,
         ...ligaturesP,
         ...ligaturesT,
@@ -90,6 +85,8 @@ function generateFont() {
         glyphGGGG,
         glyphTT,
         glyphTTT,
+        glyphGT,
+        glyphDT,
     ];
 
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
@@ -140,6 +137,20 @@ function generateFont() {
         });
     });
 
+    // 2.5 Ligaduras de conexão para 't' (g-v-t e d-v-t)
+    // Regra para "comer" a vogal final: g-a-t-a -> g_t
+    vowels.forEach(v1 => {
+        vowels.forEach(v2 => {
+            complexLigatures.push({ sub: ['g', v1, 't', v2], by: 'g_t' });
+            complexLigatures.push({ sub: ['d', v1, 't', v2], by: 'd_t' });
+        });
+    });
+    // Regra para quando não há vogal final: g-a-t -> g_t
+    vowels.forEach(v => {
+        complexLigatures.push({ sub: ['g', v, 't'], by: 'g_t' });
+        complexLigatures.push({ sub: ['d', v, 't'], by: 'd_t' });
+    });
+
     // 3. Ligaduras de 2 caracteres (ex: DD)
     const simpleLigatures = [
         // Ligaduras de empilhamento
@@ -148,8 +159,6 @@ function generateFont() {
         { sub: ['t', 't'], by: 't_t' },
 
         // Ligaduras de consoante + vogal para "comer" a vogal
-        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['d', v], by: `d_${v}` })),
-        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['g', v], by: `g_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['b', v], by: `b_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['p', v], by: `p_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['t', v], by: `t_${v}` })),
