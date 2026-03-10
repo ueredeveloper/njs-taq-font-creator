@@ -21,8 +21,17 @@ const { createGlyphTT } = require('./tt.js');
 const { createGlyphTTT } = require('./ttt.js');
 const { createGlyphGT } = require('./gt.js');
 const { createGlyphDT } = require('./dt.js');
+const { createGlyphV } = require('./v.js');
 const { createGlyphSpace } = require('./space.js');
 const { createGlyphLines } = require('./lines.js');
+const { createGlyphPT } = require('./pt.js');
+const { createGlyphVV } = require('./vv.js');
+const { createGlyphVVV } = require('./vvv.js');
+const { createGlyphVVVV } = require('./vvvv.js');
+const { createGlyphVD } = require('./vd.js');
+const { createGlyphVG } = require('./vg.js');
+const { createGlyphVP } = require('./vp.js');
+const { createGlyphVT } = require('./vt.js');
 
 const FONT_FAMILY_NAME = 'FonteTaq';
 const FONT_FILENAME = 'font_taq_maron.otf';
@@ -62,6 +71,14 @@ function generateFont() {
     const glyphTTT = createGlyphTTT(options);
     const glyphGT = createGlyphGT(options);
     const glyphDT = createGlyphDT(options);
+    const glyphV = createGlyphV(options);
+    const glyphVV = createGlyphVV(options);
+    const glyphVVV = createGlyphVVV(options);
+    const glyphVVVV = createGlyphVVVV(options);
+    const glyphVD = createGlyphVD(options);
+    const glyphVG = createGlyphVG(options);
+    const glyphVP = createGlyphVP(options);
+    const glyphVT = createGlyphVT(options);
 
     const ligaturesB = ['b_a', 'b_e', 'b_i', 'b_o', 'b_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphB.advanceWidth, path: glyphB.path
@@ -71,6 +88,9 @@ function generateFont() {
     }));
     const ligaturesT = ['t_a', 't_e', 't_i', 't_o', 't_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphT.advanceWidth, path: glyphT.path
+    }));
+    const ligaturesV = ['v_a', 'v_e', 'v_i', 'v_o', 'v_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphV.advanceWidth, path: glyphV.path
     }));
 
     const ligatures = [
@@ -87,11 +107,19 @@ function generateFont() {
         glyphTTT,
         glyphGT,
         glyphDT,
+        ...ligaturesV,
+        glyphVV,
+        glyphVVV,
+        glyphVVVV,
+        glyphVD,
+        glyphVG,
+        glyphVP,
+        glyphVT,
     ];
 
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
     // O glifo .notdef deve ser o primeiro. As ligaduras não têm unicode e vêm depois.
-    const unicodeGlyphs = [glyphA, glyphB, glyphD, glyphE, glyphG, glyphI, glyphO, glyphP, glyphT, glyphU, glyphSpace, glyphLines];
+    const unicodeGlyphs = [glyphA, glyphB, glyphD, glyphE, glyphG, glyphI, glyphO, glyphP, glyphT, glyphU, glyphV, glyphSpace, glyphLines];
     unicodeGlyphs.sort((a, b) => a.unicode - b.unicode);
 
     const glyphs = [
@@ -116,15 +144,18 @@ function generateFont() {
     const dLigatures = [];
     const gLigatures = [];
     const tLigatures = [];
+    const vLigatures = [];
     const vowels = ['a', 'e', 'i', 'o', 'u'];
     vowels.forEach(v1 => vowels.forEach(v2 => vowels.forEach(v3 => vowels.forEach(v4 => {
         dLigatures.push({ sub: ['d', v1, 'd', v2, 'd', v3, 'd', v4], by: 'd_d_d_d' });
         gLigatures.push({ sub: ['g', v1, 'g', v2, 'g', v3, 'g', v4], by: 'g_g_g_g' });
+        vLigatures.push({ sub: ['v', v1, 'v', v2, 'v', v3, 'v', v4], by: 'v_v_v_v' });
     }))));
     vowels.forEach(v1 => vowels.forEach(v2 => vowels.forEach(v3 => {
         dLigatures.push({ sub: ['d', v1, 'd', v2, 'd', v3], by: 'd_d_d' });
         gLigatures.push({ sub: ['g', v1, 'g', v2, 'g', v3], by: 'g_g_g' });
         tLigatures.push({ sub: ['t', v1, 't', v2, 't', v3], by: 't_t_t' });
+        vLigatures.push({ sub: ['v', v1, 'v', v2, 'v', v3], by: 'v_v_v' });
     })));
 
     // 2. Ligaduras de 4 caracteres (ex: DADE)
@@ -134,6 +165,7 @@ function generateFont() {
             complexLigatures.push({ sub: ['d', v1, 'd', v2], by: 'd_d' });
             complexLigatures.push({ sub: ['g', v1, 'g', v2], by: 'g_g' });
             complexLigatures.push({ sub: ['t', v1, 't', v2], by: 't_t' });
+            complexLigatures.push({ sub: ['v', v1, 'v', v2], by: 'v_v' });
         });
     });
 
@@ -157,11 +189,13 @@ function generateFont() {
         { sub: ['d', 'd'], by: 'd_d' },
         { sub: ['g', 'g'], by: 'g_g' },
         { sub: ['t', 't'], by: 't_t' },
+        { sub: ['v', 'v'], by: 'v_v' },
 
         // Ligaduras de consoante + vogal para "comer" a vogal
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['b', v], by: `b_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['p', v], by: `p_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['t', v], by: `t_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['v', v], by: `v_${v}` })),
     ];
 
     const ligatureSubs = [...dLigatures, ...gLigatures, ...tLigatures, ...complexLigatures, ...simpleLigatures]
