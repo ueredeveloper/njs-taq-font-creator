@@ -80,6 +80,9 @@ function generateFont() {
     const glyphVP = createGlyphVP(options);
     const glyphVT = createGlyphVT(options);
 
+    const ligaturesD = ['d_a', 'd_e', 'd_i', 'd_o', 'd_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphD.advanceWidth, path: glyphD.path
+    }));
     const ligaturesB = ['b_a', 'b_e', 'b_i', 'b_o', 'b_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphB.advanceWidth, path: glyphB.path
     }));
@@ -89,14 +92,19 @@ function generateFont() {
     const ligaturesT = ['t_a', 't_e', 't_i', 't_o', 't_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphT.advanceWidth, path: glyphT.path
     }));
+    const ligaturesG = ['g_a', 'g_e', 'g_i', 'g_o', 'g_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphG.advanceWidth, path: glyphG.path
+    }));
     const ligaturesV = ['v_a', 'v_e', 'v_i', 'v_o', 'v_u'].map(name => new opentype.Glyph({
         name, advanceWidth: glyphV.advanceWidth, path: glyphV.path
     }));
 
     const ligatures = [
+        ...ligaturesD,
         ...ligaturesB,
         ...ligaturesP,
         ...ligaturesT,
+        ...ligaturesG,
         glyphDD,
         glyphDDD,
         glyphDDDD,
@@ -195,6 +203,8 @@ function generateFont() {
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['b', v], by: `b_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['p', v], by: `p_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['t', v], by: `t_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['d', v], by: `d_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['g', v], by: `g_${v}` })),
         ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['v', v], by: `v_${v}` })),
     ];
 

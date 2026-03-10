@@ -2,8 +2,8 @@ const opentype = require('opentype.js');
 
 function drawVShape(path, thickness) {
     // Linha oblíqua da esquerda para a direita (sobe)
-    const x1 = 0, y1 = 550;
-    const x2 = 300, y2 = 250;
+    const x1 = 0, y1 = 550; // Invertido: desce da esquerda para a direita
+    const x2 = 300, y2 = 250; // Ponto final na parte inferior direita
     const angle = Math.atan2(y2 - y1, x2 - x1);
     const dx_v = (thickness / 2) * Math.sin(angle);
     const dy_v = (thickness / 2) * Math.cos(angle);
@@ -38,15 +38,15 @@ function createGlyphVP(options) {
     const path = new opentype.Path();
     drawVShape(path, thickness);
 
-    // V termina em (300, 250). A base do P (y=400) deve se conectar a este ponto.
-    const xOffset = 300; // p starts at x=0
-    const yOffset = 250 - 400; // p's baseline is at 400
+    // V termina em (300, 250). O 'p' se conecta horizontalmente.
+    const xOffset = 300;
+    const yOffset = 0;
 
     drawPShape(path, thickness, xOffset, yOffset);
 
     return new opentype.Glyph({
         name: 'v_p',
-        advanceWidth: 300, // Largura do V
+        advanceWidth: 300 + 300, // Largura do V + Largura do P
         path: path
     });
 }
