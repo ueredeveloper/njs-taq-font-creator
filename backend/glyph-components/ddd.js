@@ -16,32 +16,29 @@ function drawDShape(path, thickness, yOffset) {
     const innerX = x1 - thickness;
     const innerRightX = innerX + radius;
 
-    // Arco externo (para a direita)
     path.moveTo(x1, y1);
     path.curveTo(x1 + control, y1, outerRightX, midY + control, outerRightX, midY);
     path.curveTo(outerRightX, midY - control, x1 + control, y2, x1, y2);
-
-    // Arco interno
     path.lineTo(innerX, y2);
     path.curveTo(innerX + control, y2, innerRightX, midY - control, innerRightX, midY);
     path.curveTo(innerRightX, midY + control, innerX + control, y1, innerX, y1);
-
     path.closePath();
 }
 
-function createGlyphDD(options) {
+function createGlyphDDD(options) {
     const { thickness } = options;
     const path = new opentype.Path();
     const verticalShift = 300; // 2 * radius, para união perfeita
 
     drawDShape(path, thickness, 0);
     drawDShape(path, thickness, -verticalShift);
+    drawDShape(path, thickness, -verticalShift * 2);
 
     return new opentype.Glyph({
-        name: 'd_d',
-        advanceWidth: 150 + thickness, // Mesma largura do 'd' simples
+        name: 'd_d_d',
+        advanceWidth: 150 + thickness,
         path: path
     });
 }
 
-module.exports = { createGlyphDD };
+module.exports = { createGlyphDDD };

@@ -8,7 +8,11 @@ const { createGlyphE } = require('./glyph-components/e.js');
 const { createGlyphG } = require('./glyph-components/g.js');
 const { createGlyphI } = require('./glyph-components/i.js');
 const { createGlyphDD } = require('./glyph-components/dd.js');
+const { createGlyphDDD } = require('./glyph-components/ddd.js');
+const { createGlyphDDDD } = require('./glyph-components/dddd.js');
 const { createGlyphGG } = require('./glyph-components/gg.js');
+const { createGlyphGGG } = require('./glyph-components/ggg.js');
+const { createGlyphGGGG } = require('./glyph-components/gggg.js');
 const { createGlyphO } = require('./glyph-components/o.js');
 const { createGlyphP } = require('./glyph-components/p.js');
 const { createGlyphU } = require('./glyph-components/u.js');
@@ -42,6 +46,10 @@ function generateFont() {
     const glyphP = createGlyphP(options);
     const glyphDD = createGlyphDD(options);
     const glyphGG = createGlyphGG(options);
+    const glyphDDD = createGlyphDDD(options);
+    const glyphDDDD = createGlyphDDDD(options);
+    const glyphGGG = createGlyphGGG(options);
+    const glyphGGGG = createGlyphGGGG(options);
     const glyphSpace = createGlyphSpace(options);
     const glyphLines = createGlyphLines(options);
  
@@ -86,7 +94,7 @@ function generateFont() {
         });
     });
 
-    const ligatures = [...ligaturesD, ...ligaturesB, ...ligaturesG, ...ligaturesP, glyphDD, glyphGG];
+    const ligatures = [...ligaturesD, ...ligaturesB, ...ligaturesG, ...ligaturesP, glyphDD, glyphDDD, glyphDDDD, glyphGG, glyphGGG, glyphGGGG];
  
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
     // O glifo .notdef deve ser o primeiro. As ligaduras não têm unicode e vêm depois.
@@ -103,17 +111,29 @@ function generateFont() {
         familyName: FONT_FAMILY_NAME,
         styleName: 'Regular',
         unitsPerEm: 1000,
-        ascender: 600,
-        descender: -150,
+        ascender: 800,
+        descender: -900,
         glyphs: glyphs
     });
 
     // Adicionar substituições de ligaduras
     // As ligaduras devem ser definidas da mais longa para a mais curta para garantir a correspondência correta.
 
-    // 1. Ligaduras de 4 caracteres (ex: DADE)
-    const complexLigatures = [];
+    // 1. Ligaduras de 6 e 8 caracteres para 'd' e 'g'
+    const dLigatures = [];
+    const gLigatures = [];
     const vowels = ['a', 'e', 'i', 'o', 'u'];
+    vowels.forEach(v1 => vowels.forEach(v2 => vowels.forEach(v3 => vowels.forEach(v4 => {
+        dLigatures.push({ sub: ['d', v1, 'd', v2, 'd', v3, 'd', v4], by: 'd_d_d_d' });
+        gLigatures.push({ sub: ['g', v1, 'g', v2, 'g', v3, 'g', v4], by: 'g_g_g_g' });
+    }))));
+    vowels.forEach(v1 => vowels.forEach(v2 => vowels.forEach(v3 => {
+        dLigatures.push({ sub: ['d', v1, 'd', v2, 'd', v3], by: 'd_d_d' });
+        gLigatures.push({ sub: ['g', v1, 'g', v2, 'g', v3], by: 'g_g_g' });
+    })));
+
+    // 2. Ligaduras de 4 caracteres (ex: DADE)
+    const complexLigatures = [];
     vowels.forEach(v1 => {
         vowels.forEach(v2 => {
             complexLigatures.push({ sub: ['d', v1, 'd', v2], by: 'd_d' });
@@ -121,7 +141,7 @@ function generateFont() {
         });
     });
 
-    // 2. Ligaduras de 2 caracteres (ex: DA, DD)
+    // 3. Ligaduras de 2 caracteres (ex: DA, DD)
     const simpleLigatures = [
         // Ligaduras de empilhamento
         { sub: ['d', 'd'], by: 'd_d' },
@@ -150,7 +170,7 @@ function generateFont() {
         { sub: ['p', 'u'], by: 'p_u' },
     ];
 
-    const ligatureSubs = [...complexLigatures, ...simpleLigatures];
+    const ligatureSubs = [...dLigatures, ...gLigatures, ...complexLigatures, ...simpleLigatures];
 
     ligatureSubs.forEach(lig => {
         try {
