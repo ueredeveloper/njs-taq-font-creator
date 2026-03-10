@@ -19,11 +19,8 @@ const { createGlyphU } = require('./u.js');
 const { createGlyphT } = require('./t.js');
 const { createGlyphTT } = require('./tt.js');
 const { createGlyphTTT } = require('./ttt.js');
-const { createGlyphGT } = require('./gt.js');
-const { createGlyphDT } = require('./dt.js');
 const { createGlyphSpace } = require('./space.js');
 const { createGlyphLines } = require('./lines.js');
-const { createGlyphPT } = require('./pt.js');
 
 const FONT_FAMILY_NAME = 'FonteTaq';
 const FONT_FILENAME = 'font_taq_maron.otf';
@@ -61,11 +58,39 @@ function generateFont() {
     const glyphT = createGlyphT(options);
     const glyphTT = createGlyphTT(options);
     const glyphTTT = createGlyphTTT(options);
-    const glyphGT = createGlyphGT(options);
-    const glyphDT = createGlyphDT(options);
-    const glyphPT = createGlyphPT(options);
 
-    const ligatures = [glyphDD, glyphDDD, glyphDDDD, glyphGG, glyphGGG, glyphGGGG, glyphTT, glyphTTT, glyphGT, glyphDT, glyphPT];
+    // Criar glifos para ligaduras (usando a mesma forma da consoante base)
+    const ligaturesD = ['d_a', 'd_e', 'd_i', 'd_o', 'd_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphD.advanceWidth, path: glyphD.path
+    }));
+    const ligaturesG = ['g_a', 'g_e', 'g_i', 'g_o', 'g_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphG.advanceWidth, path: glyphG.path
+    }));
+    const ligaturesB = ['b_a', 'b_e', 'b_i', 'b_o', 'b_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphB.advanceWidth, path: glyphB.path
+    }));
+    const ligaturesP = ['p_a', 'p_e', 'p_i', 'p_o', 'p_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphP.advanceWidth, path: glyphP.path
+    }));
+    const ligaturesT = ['t_a', 't_e', 't_i', 't_o', 't_u'].map(name => new opentype.Glyph({
+        name, advanceWidth: glyphT.advanceWidth, path: glyphT.path
+    }));
+
+    const ligatures = [
+        ...ligaturesD,
+        ...ligaturesG,
+        ...ligaturesB,
+        ...ligaturesP,
+        ...ligaturesT,
+        glyphDD,
+        glyphDDD,
+        glyphDDDD,
+        glyphGG,
+        glyphGGG,
+        glyphGGGG,
+        glyphTT,
+        glyphTTT,
+    ];
 
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
     // O glifo .notdef deve ser o primeiro. As ligaduras não têm unicode e vêm depois.
@@ -115,19 +140,19 @@ function generateFont() {
         });
     });
 
-    // 2.5 Ligaduras de conexão para 't' (g-v-t e d-v-t)
-    vowels.forEach(v => {
-        complexLigatures.push({ sub: ['g', v, 't'], by: 'g_t' });
-        complexLigatures.push({ sub: ['d', v, 't'], by: 'd_t' });
-        complexLigatures.push({ sub: ['p', v, 't'], by: 'p_t' });
-    });
-
     // 3. Ligaduras de 2 caracteres (ex: DD)
     const simpleLigatures = [
         // Ligaduras de empilhamento
         { sub: ['d', 'd'], by: 'd_d' },
         { sub: ['g', 'g'], by: 'g_g' },
         { sub: ['t', 't'], by: 't_t' },
+
+        // Ligaduras de consoante + vogal para "comer" a vogal
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['d', v], by: `d_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['g', v], by: `g_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['b', v], by: `b_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['p', v], by: `p_${v}` })),
+        ...['a', 'e', 'i', 'o', 'u'].map(v => ({ sub: ['t', v], by: `t_${v}` })),
     ];
 
     const ligatureSubs = [...dLigatures, ...gLigatures, ...tLigatures, ...complexLigatures, ...simpleLigatures]

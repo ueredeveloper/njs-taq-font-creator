@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { generateFont } = require('./font-generator.js');
+const { generateFont } = require('./glyph-components/font-generator.js');
 
 
 const PORT = 3000;
