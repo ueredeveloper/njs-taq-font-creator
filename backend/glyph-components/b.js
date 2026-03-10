@@ -5,8 +5,8 @@ function createGlyphB(options) {
     const path = new opentype.Path();
 
     // Coordenadas para uma "meia-lua" perfeita (semicírculo)
-    const x1 = 100, y1 = 400;
-    const x2 = 900, y2 = 400; // y2 é igual a y1 para uma base reta
+    const x1 = 0, y1 = 400;
+    const x2 = 800, y2 = 400; // y2 é igual a y1 para uma base reta
     const radius = (x2 - x1) / 2; // 400
 
     // Constante para aproximar um arco de 90 graus com uma curva de Bézier cúbica
@@ -38,7 +38,7 @@ function createGlyphB(options) {
     return new opentype.Glyph({
         name: 'b',
         unicode: 'b'.charCodeAt(0),
-        advanceWidth: 900, // Largura do glifo (800) + espaçamento esquerdo (100)
+        advanceWidth: 800,
         path: path
     });
 }

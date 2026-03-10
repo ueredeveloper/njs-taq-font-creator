@@ -13,6 +13,7 @@ const { createGlyphO } = require('./glyph-components/o.js');
 const { createGlyphP } = require('./glyph-components/p.js');
 const { createGlyphU } = require('./glyph-components/u.js');
 const { createGlyphSpace } = require('./glyph-components/space.js');
+const { createGlyphLines } = require('./glyph-components/lines.js');
  
 const FONT_FAMILY_NAME = 'FonteTaq';
 const FONT_FILENAME = 'font_taq_maron.otf';
@@ -42,6 +43,7 @@ function generateFont() {
     const glyphDD = createGlyphDD(options);
     const glyphGG = createGlyphGG(options);
     const glyphSpace = createGlyphSpace(options);
+    const glyphLines = createGlyphLines(options);
  
     // Criar glifos para ligaduras (usando a mesma forma do 'd')
     const pathD = glyphD.path;
@@ -88,7 +90,7 @@ function generateFont() {
  
     // Os glifos devem ser ordenados por unicode para evitar erros de 'cmap'.
     // O glifo .notdef deve ser o primeiro. As ligaduras não têm unicode e vêm depois.
-    const unicodeGlyphs = [glyphA, glyphB, glyphD, glyphE, glyphG, glyphI, glyphO, glyphP, glyphU, glyphSpace];
+    const unicodeGlyphs = [glyphA, glyphB, glyphD, glyphE, glyphG, glyphI, glyphO, glyphP, glyphU, glyphSpace, glyphLines];
     unicodeGlyphs.sort((a, b) => a.unicode - b.unicode);
 
     const glyphs = [

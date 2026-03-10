@@ -2,7 +2,7 @@ const opentype = require('opentype.js');
 
 function drawDShape(path, thickness, yOffset) {
     // Coordenadas para uma "meia-lua" perfeita (semicírculo) para a direita
-    const x1 = 400;
+    const x1 = 20; // Ajustado para corresponder ao novo 'd'
     const y1 = 1200 + yOffset;
     const y2 = 200 + yOffset;
     const radius = (y1 - y2) / 2; // 500
@@ -38,7 +38,7 @@ function createGlyphDD(options) {
 
     return new opentype.Glyph({
         name: 'd_d',
-        advanceWidth: 800, // Mesma largura do 'd' simples
+        advanceWidth: 520, // Mesma largura do 'd' simples ajustado
         path: path
     });
 }

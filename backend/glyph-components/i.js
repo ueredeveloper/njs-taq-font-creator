@@ -3,7 +3,7 @@ const opentype = require('opentype.js');
 function createGlyphI(options) {
     const { thickness } = options;
     const path = new opentype.Path();
-    const x = 400;
+    const x = thickness / 2; // Centralizado na própria espessura
     // Uma linha vertical simples, transformada em um retângulo fino.
     path.moveTo(x - thickness / 2, 700);
     path.lineTo(x + thickness / 2, 700);
@@ -13,7 +13,7 @@ function createGlyphI(options) {
     return new opentype.Glyph({
         name: 'i',
         unicode: 'i'.charCodeAt(0),
-        advanceWidth: 800,
+        advanceWidth: thickness, // Apenas a espessura da linha
         path: path
     });
 }

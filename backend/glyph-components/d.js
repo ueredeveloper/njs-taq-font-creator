@@ -5,7 +5,7 @@ function createGlyphD(options) {
     const path = new opentype.Path();
 
     // Coordenadas para uma "meia-lua" perfeita (semicírculo) para a direita
-    const x1 = 400, y1 = 1200;
+    const x1 = 20, y1 = 1200; // Deslocado para a esquerda (era 400)
     const y2 = 200;
     const radius = (y1 - y2) / 2; // 500
 
@@ -31,7 +31,7 @@ function createGlyphD(options) {
     return new opentype.Glyph({
         name: 'd',
         unicode: 'd'.charCodeAt(0),
-        advanceWidth: 800,
+        advanceWidth: 520, // Largura ajustada (radius + thickness)
         path: path
     });
 }
